@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/corrector.css"/>
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="display:flex;justify-content:center;">Correctors</h1>
+    <table class="table">
+        <hr>
+            <tr>
+                <th>S.No</th>
+                <th>userName</th>
+                <th>password</th>
+                <th>Email</th>
+                <th>Specialty</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% i=0 %> 
+            <% for(corrector of correctors){ %>
+                <tr>
+                    <td><%=++i %></td>
+                    <td><%=corrector.userName%></td>
+                    <td><%=corrector.password%></td>
+                    <td><%=corrector.email %> </td>
+                    <td><%=corrector.specialty%></td>
+                    <td>
+                        <form method="post" action="/admin/deleteCorrector">
+                            <input type="hidden" name="id" value="<%=corrector._id%>">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% } %> 
+            <form action="/admin/addNewCorrector" method="POST">
+                <th>
+                    <td><input type="text" name="userName" placeholder="userName"></td>
+                    <td><input type="password" name="password" placeholder="password" ></td>
+                    <td><input type="email" name="email" placeholder="email"></td>
+                    <td>
+                        <select name="specialty" id="specialties">
+                            <option value="ing�nierie des logiciels">ing�nierie des logiciels</option>
+                            <option value="g�nie logiciel">g�nie logiciel</option>
+                            <option value="automatisation industries et process">automatisation industries et process</option>
+                            <option value="syst�mes informatiques et logiciels">syst�mes informatiques et logiciels</option>
+                            <option value="ing�nierie des syst�mes d'information avanc�s">ing�nierie des syst�mes d'information avanc�s</option>
+                            <option value="contr�le de processus et robotique">contr�le de processus et robotique</option>
+                            <option value="r�seaux et syst�mes distribu�s">r�seaux et syst�mes distribu�s</option>
+                            <option value="syst�mes intelligents et communication">syst�mes intelligents et communication</option>
+                            <option value="informatique biom�dicale">informatique biom�dicale</option>
+                            <option value="intelligence artificielle et d�cision">intelligence artificielle et d�cision</option>
+                            <option value="recherche op�rationnelle">recherche op�rationnelle</option>
+                            <option value="intelligence artificielle et ses applications">intelligence artificielle et ses applications</option>
+                            <option value="ing�nierie des donn�es et technologie du web">ing�nierie des donn�es et technologie du web</option>
+                            <option value="mod�les intelligents et d�cision">mod�les intelligents et d�cision</option>
+                            <option value="web et intelligence artificielle">web et intelligence artificielle</option>
+                            <option value="ing�nierie du logiciel et traitement de l'information">ing�nierie du logiciel et traitement de l'information</option>
+                        </select>
+                    </td>
+                    <td><button type="submit">addCorrector</button></td>
+                </th>
+            </form>
+        </tbody>
+    </table>
+</body>
+</html>

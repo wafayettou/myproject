@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/materials.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="container-top" style="display:flex ;">
+        <div class="container">
+            <h1>add new material</h1>
+            <form method="post" action="/admin/addMaterials">
+                <input type="text" id="nameM" name="name" placeholder="Name_material" required>
+                <input type="number" id="labs" name="labs" placeholder="Labs_material" max="6" required>
+                <select name="specialty" id="specialties">
+                    <option value="ing�nierie des logiciels">ing�nierie des logiciels</option>
+                    <option value="g�nie logiciel">g�nie logiciel</option>
+                    <option value="automatisation industries et process">automatisation industries et process</option>
+                    <option value="syst�mes informatiques et logiciels">syst�mes informatiques et logiciels</option>
+                    <option value="ing�nierie des syst�mes d'information avanc�s">ing�nierie des syst�mes d'information avanc�s</option>
+                    <option value="contr�le de processus et robotique">contr�le de processus et robotique</option>
+                    <option value="r�seaux et syst�mes distribu�s">r�seaux et syst�mes distribu�s</option>
+                    <option value="syst�mes intelligents et communication">syst�mes intelligents et communication</option>
+                    <option value="informatique biom�dicale">informatique biom�dicale</option>
+                    <option value="intelligence artificielle et d�cision">intelligence artificielle et d�cision</option>
+                    <option value="recherche op�rationnelle">recherche op�rationnelle</option>
+                    <option value="intelligence artificielle et ses applications">intelligence artificielle et ses applications</option>
+                    <option value="ing�nierie des donn�es et technologie du web">ing�nierie des donn�es et technologie du web</option>
+                    <option value="mod�les intelligents et d�cision">mod�les intelligents et d�cision</option>
+                    <option value="web et intelligence artificielle">web et intelligence artificielle</option>
+                    <option value="ing�nierie du logiciel et traitement de l'information">ing�nierie du logiciel et traitement de l'information</option>
+                    
+                </select>
+                <% for(candidate of candidates){ %>
+                    <input type="hidden" name="candidateIds" value="<%=candidate._id%>"/>
+                    <input type="hidden" name="specialtyCandidates" value="<%=candidate.Speciality%>">
+                <% } %> 
+                <button id="submit" type="submit">add</button>
+            </form>
+            
+        </div>
+    </div>
+    <div class="materials">
+        <table class="table">
+            <hr>
+                <tr>
+                 <th>S.No</th>
+                 <th>Name_material</th>
+                 <th>Labs</th>
+                 <th>Specialty</th>
+                 
+                </tr>
+            </thead>
+            <tbody>
+                <% i=0 %> 
+                <% for(material of materials){ %>
+                    <tr>
+                        <td><%=++i %></td>
+                        <td><%=material.name%></td>
+                        <td><%=material.labs%></td>
+                        <td><%=material.specialty%></td>
+                        <td>
+                            <form method="post" action="/admin/deleteMaterial">
+                                <input type="hidden" name="id" value="<%=material._id%>">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% } %> 
+            </tbody>
+          </table>
+    </div>
+    
+</body>
+</html>

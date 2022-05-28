@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/halls.css">
+    <title>Document</title>
+</head>
+<body>
+    <%var capacityTotal=0 %>
+    <% for(hall of halls){capacityTotal=capacityTotal+hall.capacity} %>  
+    <h1>candidates:<%=candidates.length%> </h1><h1> halls:<%=halls.length %>  </h1>
+    <% if(halls.length==0){ %>
+        <h1>The remaining candidates:<%=candidates.length %>  </h1>
+    <% }else{ %>
+        <% if(candidates.length-capacityTotal<0){ %>
+            <h1>You have  <%=Math.abs(candidates.length-capacityTotal) %> empty spaces (localization : <%=halls[halls.length-1].localization %> )</h1>
+        <% }else if(candidates.length-capacityTotal>0){ %>
+            <h1>You have <%=Math.abs(capacityTotal-candidates.length) %>  candidates who have no seats</h1>
+        <% }else{ %>
+            <h1>All rooms are vacant, and all candidates are in their places</h1>
+        <% } %> 
+    <% } %> 
+
+    <div class="contaner">
+        <% if(candidates.length>0){ %>
+            <div class="addHalls">
+                <form action="/admin/addHall" method="post" id="forLoop">
+                    <input type="text" id="capacity" name="capacity" placeholder="Capacity" max="30">
+                    <input type="text" id="localization" name="localization" placeholder="Localization">
+                    <input type="hidden" id="capacityTotal" value="<%=capacityTotal%>" name="capacityTotal">
+                    <select name="specialty" id="specialties">
+                        <option value="">Choose a specialty</option>
+                        <option value="ing�nierie des logiciels">ing�nierie des logiciels</option>
+                        <option value="g�nie logiciel">g�nie logiciel</option>
+                        <option value="automatisation industries et process">automatisation industries et process</option>
+                        <option value="syst�mes informatiques et logiciels">syst�mes informatiques et logiciels</option>
+                        <option value="ing�nierie des syst�mes d'information avanc�s">ing�nierie des syst�mes d'information avanc�s</option>
+                        <option value="contr�le de processus et robotique">contr�le de processus et robotique</option>
+                        <option value="r�seaux et syst�mes distribu�s">r�seaux et syst�mes distribu�s</option>
+                        <option value="syst�mes intelligents et communication">syst�mes intelligents et communication</option>
+                        <option value="informatique biom�dicale">informatique biom�dicale</option>
+                        <option value="intelligence artificielle et d�cision">intelligence artificielle et d�cision</option>
+                        <option value="recherche op�rationnelle">recherche op�rationnelle</option>
+                        <option value="intelligence artificielle et ses applications">intelligence artificielle et ses applications</option>
+                        <option value="ing�nierie des donn�es et technologie du web">ing�nierie des donn�es et technologie du web</option>
+                        <option value="mod�les intelligents et d�cision">mod�les intelligents et d�cision</option>
+                        <option value="web et intelligence artificielle">web et intelligence artificielle</option>
+                        <option value="ing�nierie du logiciel et traitement de l'information">ing�nierie du logiciel et traitement de l'information</option>
+                        
+                    </select>
+                    <% for(i=0;i<=candidates.length-1;i++){ %>
+                        <input type="hidden" name="candidatesInputs" value="<%=candidates[i]._id%>"/>
+                        <input type="hidden" name="specialties" value="<%=candidates[i].Speciality%>">
+                    <% } %> 
+                    <input type="hidden" id="materials" value="<%=materials%>"/>
+                    <button type="btn" id="addHall" class="error" disabled>addHall</button>
+                    <h4 style="display:none;" id="error">you have added materials after halls for this specialty <a href="/admin/materials">click here...</a></h4>
+                
+                </form>
+    
+            </div>
+        <% }else{ %>
+            <h1>You must enter candidates to be allowed to add rooms...</h1>
+            <h1>to add rooms <a href="/admin/candidates">click here</a></h1>
+        <% } %> 
+        <div class="halls">
+            <table class="table">
+                <hr>
+                    <tr>
+                     <th>empty places / capacity</th>
+                     <th>specialties</th>
+                     <th>Localization</th>
+                     <th>Deletes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% i=0 %> 
+                    <% for(hall of halls){ %>
+                        <tr>
+                            <td><%=hall.candidates.length%> / <%=hall.capacity%></td>
+                            <% if(hall.candidates.length>0){ %>
+                                <td><%=hall.candidates[0].Speciality%></td>
+                            <% }else{ %>
+                                <td> // </td>
+                            <% } %> 
+                            <td><%=hall.localization%></td>
+                            <td>
+                                <form method="post" action="/admin/deleteHall">
+                                    <input type="hidden" name="specialty" value="<%=hall.candidates[0].Speciality%>"/>
+                                    <input type="hidden" name="capacity" value="<%=hall.capacity%>"/>
+                                    <input type="hidden" name="id" value="<%=hall._id%>"/>
+                                    <% if(i==halls.length-1){ %>
+                                        <button type="submit" >Delete</button>
+                                    <% }else{ %>
+                                        <button type="submit" disabled>Delete</button>
+                                    <% } %> 
+                                </form>
+                            </td>
+                        </tr>
+                        <% i++ %> 
+                    <% } %> 
+                </tbody>
+              </table>
+        </div>
+    </div>
+    <script>
+        var capacity=document.getElementById('capacity');
+        var addHall=document.getElementById('addHall');
+        var localization=document.getElementById('localization');
+        var specialties=document.getElementById('specialties')
+        var materials=document.getElementById('materials')
+        var error=document.getElementById('error')
+        capacity.onfocus=function(){
+            capacity.setAttribute('type','number')
+        }
+    
+        specialties.onchange=function(){
+            if(materials.value.includes(this.value) && this.value!=''){
+                addHall.removeAttribute('disabled')
+                error.setAttribute('style','display:none')
+
+            }else{
+                addHall.setAttribute('disabled','')
+                error.setAttribute('style','display:block')
+            }
+        }
+        capacity.onkeyup=function(){
+
+            if(this.value.length>0 && localization.value.length>0 && materials.value.includes(this.value)){
+                addHall.removeAttribute('disabled')
+            }else{
+                addHall.setAttribute('disabled','')
+            }
+        }
+        localization.onkeyup=function(){
+            if(this.value.length>0 && capacity.value.length>0 && materials.value.includes(this.value)){
+                addHall.removeAttribute('disabled')
+            }else{
+                addHall.setAttribute('disabled','')
+
+            }
+        }
+        
+    </script>
+</body>
+</html>

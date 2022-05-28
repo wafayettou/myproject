@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/result.css">
+    <title>Document</title>
+</head>
+<body><% console.log('error: ',error) %> 
+    <div class="container">
+        <% if(candidate){ %>
+            <div class="candidate" style="display:flex;justify-content:space-around;align-items:center;">
+                <div style="display:flex"><h3>First_name: </h3><h6> <%= candidate.First_name %> </h6></div>
+                <div style="display:flex"><h3>Last_name: </h3><h6> <%= candidate.Last_name %></h6></div>
+                <div style="display:flex"><h3>Candidate_number: </h3><h6> <%= candidate.Candidate_number %></h6></div>
+            </div>
+        <% }else{ %>
+            <h1 style="color: red;display:flex;justify-content:center;"><%=error %> </h1>
+        <% } %> 
+        <table class="table">
+            <hr>
+                <tr>
+                    <th>Name_material</th>
+                    <th>Labs</th>
+                    <th>Specialty</th>
+                    <th>mark</th>
+                    <th>note</th>
+                </tr>
+            </thead>
+            <% if(result){ %>
+                <tbody>
+                    <% var moy=0; %> 
+                    <% var labs=0; %> 
+                    <% for(i=0;i<=result.materials.length-1;i++){ %>
+                        <tr>
+                            <td><%=result.materials[i].name%></td>
+                            <td><%=result.materials[i].labs%></td>
+                            <td><%=result.materials[i].specialty%></td>
+                            <td><%=result.marks[i] %> </td>
+                            <td><%=result.notes[i] %> </td>
+                        </tr>
+                        <% labs=labs+result.materials[i].labs %> 
+                        <% moy=moy+result.marks[i]*result.materials[i].labs%> 
+                    <% } %> 
+                    <% moy=moy/labs %> 
+                        <tr>
+                            <td style="background: darkblue;color:white">moy</td>
+                            <% if(moy<10){ %>
+                                <td colspan="4" style="background: red; color:white;"><%=moy %> / 20</td>
+                            <% }else{ %>
+                                <td colspan="4" style="background: green; color:white;"><%=moy %> / 20</td>
+                            <% } %> 
+                            
+                        </tr>
+                </tbody>
+            <% } %> 
+        </table>
+    </div>
+</body>
+</html>

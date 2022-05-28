@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/deliberations.css">
+    <title>Document</title>
+</head>
+<body>
+
+   <div class="container">
+        <div class="download" style="margin: 20px; ">
+            <form action="/admin/downloadResult" method="POST">
+                <button type="submit">downloadResult</button>
+            </form>
+        </div>
+        <div class="table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>First_name</th>
+                        <th>Last_name</th>
+                        <th>moy</th>
+                        <th>Birth_date</th>
+                        <th>Candidate_number</th>
+                        <th>Results</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <% for(result of results){ %>
+                        <% if(result.candidate){ %>
+                            <tr>
+                                <td><%=result.candidate.First_name%></td>
+                                <td><%=result.candidate.Last_name%></td>
+                                <td><%=result.moy%></td>
+                                <td><%=result.candidate.Birth_date%></td>
+                                <td><%=result.candidate.Candidate_number%></td>
+                                <% if(result.moy<10){ %>
+                                    <td style="background: red;">Failure</td>
+                                <% }else{ %>
+                                    <td style="background: green;">Successful</td>
+                                <% } %> 
+                            </tr>
+                        <% } %> 
+                    <% } %> 
+                    
+                </tbody>
+            </table>
+       </div>
+       
+   </div>
+</body>
+</html>

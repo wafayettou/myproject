@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/candidate.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="showCandidates">
+        <table class="table">
+            <hr>
+                <tr>
+                    <th>S.No</th>
+                    <th>Cryptos</th>
+                    <th>update Marks/20</th>
+                    <th>update Notes</th>
+                    <th>Abs</th>
+                </tr>
+            </thead>
+            <form method="post" action="/corrector/addNote">
+                <tbody>
+                    <% var i=0; %> 
+                    <input type="hidden" name="specialty" value="<%=specialties[0].nameSpecialty%>"/>
+                    <% for(j=0;j<=specialties[0].materials.length-1;j++){ %>
+                        <input type="hidden" name="materialIds" value="<%=specialties[0].materials[j]._id%>">
+                    <% } %> 
+                    <% for(candidate of specialties[0].candidates){ %>
+                        <tr>
+                            <td><%=i %> </td>
+                            <td>000<%=cryptos[i]%></td>
+
+                            <td>
+                                <input type="hidden" name="candidateIds" value="<%=candidate._id %>">
+                                <%var n=0 %>
+                                <% for(material of specialties[0].materials){ %>
+
+                                    <% if(results.length<specialties[0].materials.length){ %>     
+                                        <input type="text" class="mark<%=i%>" onfocusout="toStringTyp(this)" onfocus="toNumberType(this)" name="marks"  value="" placeholder="mark <%=material.name%>" max="20" required>
+                                    <% }else{ %>
+                                        <input type="text" class="mark<%=i%>" onfocusout="toStringTyp(this)" onfocus="toNumberType(this)" name="marks"  value="<%=results[i].marks[n]%>" placeholder="mark <%=material.name%>" max="20" required>
+                                    <% } %> 
+                                    <% n++ %> 
+                                <% } %> 
+                            </td>
+                            <td>
+                                <% var d=0 %>
+                                <% for(material of specialties[0].materials){ %>
+                                    <% if(results.length<specialties[0].materials.length){ %>
+                                         
+                                        <input type="text" class="note<%=i%>" name="notes" value="" placeholder="note <%=material.name %>" required>
+                                    <% }else{ %>
+                                        <input type="text" class="note<%=i%>" name="notes" value="<%=results[i].notes[d]%>" placeholder="note <%=material.name %>" required>
+                                    <% } %> 
+                                    <% d++ %> 
+                                <% } %> 
+                            </td>
+                            <td><button type="button" style="background:green;color:white" id="btn<%=i%>" onclick="abs('<%=i%>')" return false>Abs</button></td>
+                            
+                        </tr>
+                        <% i++ %> 
+
+                    <% } %> 
+                    
+                </tbody>
+                <button type="submit">Add Nodes</button>
+            </form>
+          </table>
+    </div>
+    <script>
+        function toNumberType(param){
+            
+            param.setAttribute('type','number')
+        }
+        function toStringTyp(param){
+            param.setAttribute('type','text')
+        }
+        var absT=[]
+        
+        
+        function abs(i){
+            
+            if(!absT.includes(i)){
+                for(j=0;j<=document.getElementsByClassName('mark'+i).length-1;j++){
+                    document.getElementById('btn'+i).setAttribute('style','background:red;color:white')
+                    document.getElementsByClassName('mark'+i)[j].value=0;
+                    document.getElementsByClassName('note'+i)[j].value='abs'
+                }
+                absT.push(i)
+            }else{
+                for(j=0;j<=document.getElementsByClassName('mark'+i).length-1;j++){
+                    document.getElementById('btn'+i).setAttribute('style','background:green;color:white')
+
+                    document.getElementsByClassName('mark'+i)[j].value='';
+                    document.getElementsByClassName('note'+i)[j].value=''
+                }
+                delete absT[absT.indexOf(i)]
+            }
+        }
+    </script>
+</body>
+</html>

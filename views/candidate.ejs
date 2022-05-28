@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/candidate.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="uploadCandidates">
+        <h1>Add File (excel.csv)</h1>
+        <form action="/" enctype="multipart/form-data" method="post">
+            <input type="file" name="csv"/>
+            <button type="submit">upload</button>
+        </form>
+    </div>
+    
+    <div style="display: flex;justify-content:space-around; border:1px solid black;margin:10px;padding:10px;">
+        <div class="downloadCrypto">
+            <% if(byCategory){ %>
+                <form action="/admin/downloadCrypto" method="POST">
+                    <input type="hidden" value="<%=candidates[0].Speciality%>" name="specialtyInput" id="specialtyInput">
+                    <button type="submit" id="submitSpecialtyInput">downloadCrypto</button>
+                </form>
+            <% } %> 
+        </div>
+        <div>
+            <% if(candidates.length==0){ %>
+                
+            <% }else{ %>
+                <form action="/admin/candidates" method="POST">
+                    <select name="specialty" id="specialties">
+                        <option value="">Choose a category to see the crypto</option>
+                        <option value="ing�nierie des logiciels">ing�nierie des logiciels</option>
+                        <option value="g�nie logiciel">g�nie logiciel</option>
+                        <option value="automatisation industries et process">automatisation industries et process</option>
+                        <option value="syst�mes informatiques et logiciels">syst�mes informatiques et logiciels</option>
+                        <option value="ing�nierie des syst�mes d'information avanc�s">ing�nierie des syst�mes d'information avanc�s</option>
+                        <option value="contr�le de processus et robotique">contr�le de processus et robotique</option>
+                        <option value="r�seaux et syst�mes distribu�s">r�seaux et syst�mes distribu�s</option>
+                        <option value="syst�mes intelligents et communication">syst�mes intelligents et communication</option>
+                        <option value="informatique biom�dicale">informatique biom�dicale</option>
+                        <option value="intelligence artificielle et d�cision">intelligence artificielle et d�cision</option>
+                        <option value="recherche op�rationnelle">recherche op�rationnelle</option>
+                        <option value="intelligence artificielle et ses applications">intelligence artificielle et ses applications</option>
+                        <option value="ing�nierie des donn�es et technologie du web">ing�nierie des donn�es et technologie du web</option>
+                        <option value="mod�les intelligents et d�cision">mod�les intelligents et d�cision</option>
+                        <option value="web et intelligence artificielle">web et intelligence artificielle</option>
+                        <option value="ing�nierie du logiciel et traitement de l'information">ing�nierie du logiciel et traitement de l'information</option>
+                    </select>
+                    <% if(byCategory){ %>
+                        <input type="submit" id="submit" value="Filter" disabled/>
+                    <% }else{ %>
+                        <input type="submit" id="submit" value="Filter"/>
+                    <% } %> 
+                </form>
+            <% } %> 
+        </div>
+        <% if(byCategory){ %>
+            <div class="specialtyName"><%=candidates[0].Speciality %> </div>
+        <% } %>  
+    
+    </div>
+    <div class="showCandidates">
+        <table class="table">
+            <hr>
+                <tr>
+                <% if(byCategory){ %>
+                    <th>Cryptos</th>
+                <% } %> 
+                 <th>Candidate_number</th>
+                 <th>Bac_number</th>
+                 <th>Year_Bac</th>
+                 <th>First_name</th>
+                 <th>Last_name</th>
+                 <th>Marks / 20</th>
+                 <th>Note</th>
+                 <th>Birth_date</th>
+                 <th>Birth_place</th>
+                 <th>Phone_number:</th>
+                 <th>Email</th>
+                 <th>Address</th>
+                 <th>Year_of_deplom</th>
+                 <th>Curriculum_type</th>
+                 <th>Sector</th>
+                 <th>Speciality</th>
+                 <th>Master_classification_average</th>
+                 <th>Master_classification_category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% var i=0; %> 
+                <% for(candidate of candidates){ %>
+                    
+                    <tr>
+                        <% if(byCategory){ %>
+                            <td>000<%=cryptos[i]%></td>
+                        <% } %> 
+                        
+                        <td><%=candidate.Candidate_number %> </td>
+                        <td><%=candidate.Bac_number %></td>
+                        <td><%=candidate.Year_Bac %></td>
+                        <td><%=candidate.First_name %></td>
+                        <td><%=candidate.Last_name %></td>
+                        <td><%=candidate.Mark %>/ 20 </td>
+                        <td><%=candidate.Note %> </td>
+                        <td><%=candidate.Birth_date %></td>
+                        <td><%=candidate.Birth_place %></td>
+                        <td><%=candidate.Phone_number %></td>
+                        <td><%=candidate.Email %></td>
+                        <td><%=candidate.Address %></td>
+                        <td><%=candidate.Year_of_deplom %></td>
+                        <td><%=candidate.Curriculum_type%></td>
+                        <td><%=candidate.Sector %></td>
+                        <td><%=candidate.Speciality %></td>
+                        <td><%=candidate.Master_classification_average %></td>
+                        <td><%=candidate.Master_classification_category %></td>
+                        <td>
+                            <form method="post" action="/admin/deleteCandidate">
+                                <button type="submit">Delete</button>
+                                <input name="id" style="display: none;" type="text" value="<%=candidate._id%>"/>
+                            </form>
+                        </td>
+                    </tr>
+                    <% i++ %> 
+                <% } %> 
+                <tr>
+
+                    <form action="/admin/addCandidate" method="post" id="post">
+                        <td><button type="submit" id="add">addCandidate</button></td>
+                        <td>'<ma//rk>'<input type="hidden" name="crypto"></td>
+                        <td><input class="myinput" type="text" placeholder="Candidate_number" name="Candidate_number"></td>
+                        <td><input class="myinput" type="number" placeholder="Bac_number" name="Bac_number"></td>
+                        <td><input class="myinput" type="number" placeholder="Year_Bac" name="Year_Bac"></td>
+                        <td><input class="myinput" type="text" placeholder="First_name" name="First_name"></td>
+                        <td><input class="myinput" type="text" placeholder="Last_name" name="Last_name"></td>
+                        <td>'<Ma//rk> <input type="hidden" name="mark"></td>
+                        <td>'<ma//rk>' <input type="hidden" name="note"></td>
+                        <td><input class="myinput" type="date" placeholder="Birth_date" name="Birth_date"></td>
+                        <td><input class="myinput" type="text" placeholder="Birth_place" name="Birth_place"></td>
+                        <td><input class="myinput" type="text" placeholder="Phone_number" name="Phone_number"></td>
+                        <td><input class="myinput" type="email" placeholder="Email" name="Email"></td>
+                        <td><input class="myinput" type="text" placeholder="Address" name="Address"></td>
+                        <td><input class="myinput" type="text" placeholder="Year_of_deplom" name="Year_of_deplom"></td>
+                        <td><input class="myinput" type="number" placeholder="Curriculum_type" name="Curriculum_type"></td>
+                        <td><input class="myinput" type="text" placeholder="Sector" name="Sector"></td>
+                        <td><input class="myinput" type="text" placeholder="Speciality" name="Speciality"></td>
+                        <td><input class="myinput" type="text" placeholder="Master_classification_average" name="Master_classification_average"></td>
+                        <td><input class="myinput" type="text" placeholder="Master_classification_category" name="Master_classification_category"></td>
+                    </form>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+    <script>
+        const submit=document.getElementById('submit')
+        const specialties=document.getElementById('specialties')
+        const specialtyInput=document.getElementById('specialtyInput')
+        submitSpecialtyInput=document.getElementById('submitSpecialtyInput')
+        specialties.onchange=function(){
+            if(this.value==''){
+                submit.setAttribute('disabled','')
+                submitSpecialtyInput.setAttribute('disabled','')
+            }else{
+                specialtyInput.value=this.value;
+                submitSpecialtyInput.removeAttribute('disabled')
+                submit.removeAttribute('disabled')
+            }
+        }
+    </script>
+</body>
+</html>
